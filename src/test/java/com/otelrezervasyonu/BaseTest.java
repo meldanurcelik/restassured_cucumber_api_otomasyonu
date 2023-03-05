@@ -8,12 +8,12 @@ import static io.restassured.RestAssured.given;
 
 public class BaseTest {
 
-    protected String bookingObject() {
+    protected String bookingObject(String firstname, String lastname, int totalAmount) {
 
         JSONObject body = new JSONObject();
-        body.put("firstname", "Melda");
-        body.put("lastname", "Celik");
-        body.put("totalprice", 222);
+        body.put("firstname", firstname);
+        body.put("lastname", lastname);
+        body.put("totalprice", totalAmount);
         body.put("depositpaid", true);
 
         JSONObject bookingDates = new JSONObject();
@@ -26,19 +26,42 @@ public class BaseTest {
         return body.toString();
     }
 
-    protected Response createBooking() {
+    protected String createToken() {
+
+        JSONObject body = new JSONObject();
+        body.put("username", "admin");
+        body.put("password", "password123");
 
         Response response = given()
-                .when()
                 .contentType(ContentType.JSON)
-                .body(bookingObject())
+                .when()
+                .body(body.toString()).log().all()
+                .post("https://restful-booker.herokuapp.com/auth");
+
+        response.prettyPrint();
+
+        return response.jsonPath().getJsonObject("token");
+    }
+
+    protected Response createBooking(String firstname, String lastname, int totalAmount) {
+
+        Response response = given()
+                .contentType(ContentType.JSON)
+                .when()
+                .body(bookingObject(firstname, lastname, totalAmount))
                 .post("https://restful-booker.herokuapp.com/booking");
 
-        response.then().log().all().statusCode(200);
+        response
+                .then()
+                .statusCode(200);
 
-        response.prettyPeek();
+        response.prettyPrint();
 
         return response;
+    }
+
+    protected int createBookingId(String firstname, String lastname, int totalAmount, Boolean depositpaid) {
+        return createBooking(firstname, lastname, totalAmount).jsonPath().getJsonObject("bookingid");
     }
 
 }

@@ -11,7 +11,7 @@ public class GetBookingByIdTests extends BaseTest {
     @Test
     public void getBookingByIdTest() {
 
-        Response newBooking = createBooking();
+        Response newBooking = createBooking("Melda", "Celik", 222);
         int reservationId = newBooking.jsonPath().getJsonObject("bookingid");
 
         Response response = given()
