@@ -15,13 +15,13 @@ public class UpdateBookingTests extends BaseTest {
         String token = createToken();
         int bookingId = createBookingId("Ozan", "Ilhan", 150, true);
 
-        Response response = given()
+        Response response = given(spec)
                 .contentType(ContentType.JSON)
                 .header("Cookie", "token=" + token)
                 .body(bookingObject("Suzy", "Ahmet", 1500)).log().all()
-                .put("https://restful-booker.herokuapp.com/booking/" + bookingId);
+                .put("/booking/" + bookingId);
 
-        response.prettyPrint();
+        //response.prettyPrint();
 
         String firstName = response.jsonPath().getJsonObject("firstname");
         String lastName = response.jsonPath().getJsonObject("lastname");

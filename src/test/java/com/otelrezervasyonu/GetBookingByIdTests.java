@@ -14,9 +14,9 @@ public class GetBookingByIdTests extends BaseTest {
         Response newBooking = createBooking("Melda", "Celik", 222);
         int reservationId = newBooking.jsonPath().getJsonObject("bookingid");
 
-        Response response = given()
+        Response response = given(spec)
                 .when()
-                .get("https://restful-booker.herokuapp.com/booking/" + reservationId);
+                .get("/booking/" + reservationId);
         //.then().log().all()
         //.statusCode(200);
 

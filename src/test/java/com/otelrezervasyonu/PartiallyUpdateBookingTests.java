@@ -19,13 +19,13 @@ public class PartiallyUpdateBookingTests extends BaseTest {
         JSONObject body = new JSONObject();
         body.put("firstname", "Ayse");
 
-        Response response = given()
+        Response response = given(spec)
                 .contentType(ContentType.JSON)
                 .header("Cookie", "token=" + token)
                 .body(body.toString())
-                .patch("https://restful-booker.herokuapp.com/booking/" + bookingId);
+                .patch("/booking/" + bookingId);
 
-        response.prettyPrint();
+        //response.prettyPrint();
 
         Assertions.assertEquals("Ayse", response.jsonPath().getJsonObject("firstname"));
 

@@ -14,16 +14,16 @@ public class DeleteBookingTests extends BaseTest {
         String token = createToken();
         int bookingId = createBookingId("Ozan", "Ilhan", 5, true);
 
-        Response response = given()
+        Response response = given(spec)
                 .contentType(ContentType.JSON)
                 .header("Cookie", "token=" + token)
-                .delete("https://restful-booker.herokuapp.com/booking/" + bookingId);
+                .delete("/booking/" + bookingId);
 
         response
                 .then()
                 .statusCode(201);
 
-        response.prettyPrint();
+        //response.prettyPrint();
 
     }
 
